@@ -1,8 +1,5 @@
 @import './reset.scss';
-
-$black: #2c2c2c;
-$white: #ebebeb; 
-$blue:  #417ef0;
+@import './colors.scss';
 
 body {
     background-color: $blue;
@@ -11,7 +8,7 @@ body {
 header {
     background-color: $black;
     width: 100%;
-    height: 100px;
+    height: 200px;
     box-shadow: 0 2px 2px $black;
     margin: 0 auto;
 }
