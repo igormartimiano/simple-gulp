@@ -1,13 +1,8 @@
-<<<<<<< HEAD:dev/styles/main.scss
 @import '_core/_reset.scss';
 
 $black: #2c2c2c;
 $white: #ebebeb; 
 $blue:  #417ef0;
-=======
-@import './reset.scss';
-@import './colors.scss';
->>>>>>> caf79c24de3af3dded2e89dda7ea8731649f493b:src/scss/main.scss
 
 body {
     background-color: $blue;
@@ -16,7 +11,7 @@ body {
 header {
     background-color: $black;
     width: 100%;
-    height: 200px;
+    height: 100px;
     box-shadow: 0 2px 2px $black;
     margin: 0 auto;
 }
