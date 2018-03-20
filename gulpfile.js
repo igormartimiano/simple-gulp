@@ -37,6 +37,8 @@ const path = {
     }
 }
 
+// Task - Facilitando log
+// -------------------------
 const { log } = console;
 
 // Task - BrowserSync
