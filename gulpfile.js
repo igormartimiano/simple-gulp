@@ -2,16 +2,16 @@
 
 // Dependecies
 // -------------------------
-const gulp         = require('gulp'),
-      sass         = require('gulp-sass'),
-      watch        = require('gulp-watch'),
-      concat       = require('gulp-concat'),
-      rename       = require('gulp-rename'),
-      plumber      = require('gulp-plumber'),
-      imageMin     = require('gulp-imagemin'),
-      sourceMap    = require('gulp-sourcemaps'),
+const autoPrefixer = require('gulp-autoprefixer'),
       browserSync  = require('browser-sync'),
-      autoPrefixer = require('gulp-autoprefixer');
+      sourceMap    = require('gulp-sourcemaps'),
+      imageMin     = require('gulp-imagemin'),
+      plumber      = require('gulp-plumber'),
+      rename       = require('gulp-rename'),
+      concat       = require('gulp-concat'),
+      watch        = require('gulp-watch'),
+      sass         = require('gulp-sass'),
+      gulp         = require('gulp');
 
 // Sass Styles
 // -------------------------
