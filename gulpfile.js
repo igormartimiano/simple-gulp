@@ -2,16 +2,18 @@
 
 // Dependecies
 // -------------------------
-const autoPrefixer = require('gulp-autoprefixer'),
-      browserSync  = require('browser-sync'),
-      sourceMap    = require('gulp-sourcemaps'),
-      imageMin     = require('gulp-imagemin'),
-      plumber      = require('gulp-plumber'),
-      rename       = require('gulp-rename'),
-      concat       = require('gulp-concat'),
-      watch        = require('gulp-watch'),
-      sass         = require('gulp-sass'),
-      gulp         = require('gulp');
+// TO-DO Add Babel, eslint
+const autoPrefixer = require('gulp-autoprefixer'), // CSS Auto-prefix
+      browserSync  = require('browser-sync'),      // Auto reload 
+      sourceMap    = require('gulp-sourcemaps'),   // Sourcemaps for any extensions
+      imageMin     = require('gulp-imagemin'),     // Compression for images (jpg, png, gif)
+      plumber      = require('gulp-plumber'),      // Resolve and handle errors on pipe
+      rename       = require('gulp-rename'),       // Rename files
+      concat       = require('gulp-concat'),       // Concat tasks
+      uglify       = require('gulp-uglify'),       // Minify JS
+      watch        = require('gulp-watch'),        // Watch files for changes
+      sass         = require('gulp-sass'),         // Use SASS 
+      gulp         = require('gulp');              // Gulp base
 
 // Sass Styles
 // -------------------------
@@ -20,7 +22,7 @@ const compressed = { outputStyle: 'compressed' },
 
 // Paths
 // -------------------------
-const path = {
+const paths = {
     dev: {
         core: 'dev/**/*',
         images: 'dev/images/**/*',
@@ -37,20 +39,16 @@ const path = {
     }
 }
 
-// Task - Facilitando log
-// -------------------------
-const { log } = console;
-
 // Task - BrowserSync
 // -------------------------
 gulp.task('browserSync', () => {
     browserSync.init({ server: 'dist' })
     gulp.start(['images', 'scripts', 'styles', 'views']);
-    gulp.watch(path.dev.scripts, ['scripts']);
-    gulp.watch(path.dev.styles,  ['styles']);
-    gulp.watch(path.dev.views,   ['views']);
-    gulp.watch(path.dev.images,  ['images']);
-    gulp.watch(path.dist.core).on('change', () => {
+    gulp.watch(paths.dev.scripts, ['scripts']);
+    gulp.watch(paths.dev.styles,  ['styles']);
+    gulp.watch(paths.dev.views,   ['views']);
+    gulp.watch(paths.dev.images,  ['images']);
+    gulp.watch(paths.dist.core).on('change', () => {
         browserSync.reload()
     });
 });
@@ -58,13 +56,16 @@ gulp.task('browserSync', () => {
 // Task - Styles
 // -------------------------
 gulp.task('styles', () => {
-    gulp.src(path.dev.styles)
+    gulp.src(paths.dev.styles)
         .pipe(sourceMap.init())
         .pipe(plumber({
-        handleError: function(error){
-            log(error);
-            this.emit('Task Styles - Ending the process');
-        }
+            errorHandler: function(err) {
+                notify.onError({
+                    title: 'SASS Error',
+                    message: 'Error: <%= error.message %>'
+                })(err);
+                this.emit('End')
+            }
         }))
         .pipe(autoPrefixer({
             browsers: ['last 3 versions'],
@@ -73,29 +74,31 @@ gulp.task('styles', () => {
         .pipe(sass(compressed))
         .pipe(rename('style-min.css'))
         .pipe(sourceMap.write('.'))
-        .pipe(gulp.dest(path.dist.styles));
+        .pipe(gulp.dest(paths.dist.styles));
 })
 
 // Task - Views
 // -------------------------
 gulp.task('views', () => {
-    gulp.src(path.dev.views)
-        .pipe(gulp.dest(path.dist.core));
+    gulp.src(paths.dev.views)
+        .pipe(gulp.dest(paths.dist.core));
 });
 
 // Task - Scripts
 // -------------------------
 gulp.task('scripts', () => {
-    gulp.src(path.dev.scripts)
-        .pipe(gulp.dest(path.dist.scripts));
+    gulp.src(paths.dev.scripts)
+        .pipe(uglify())
+        .pipe(rename('app-min.js'))
+        .pipe(gulp.dest(paths.dist.scripts));
 });
 
 // Task - Images
 // -------------------------
 gulp.task('images', () => {
-    gulp.src(path.dev.images)
+    gulp.src(paths.dev.images)
         .pipe(imageMin())
-        .pipe(gulp.dest(path.dist.images))
+        .pipe(gulp.dest(paths.dist.images))
 });
 
 // Task - Gulp
