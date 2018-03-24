@@ -1,10 +1,8 @@
-'use strict';
-
 // Dependecies
 // -------------------------
 // TO-DO Add Babel, eslint
 const autoPrefixer = require('gulp-autoprefixer'), // CSS Auto-prefix
-      browserSync  = require('browser-sync'),      // Auto reload 
+      browserSync  = require('browser-sync'),      // Auto reload for debugging
       sourceMap    = require('gulp-sourcemaps'),   // Sourcemaps for any extensions
       imageMin     = require('gulp-imagemin'),     // Compression for images (jpg, png, gif)
       plumber      = require('gulp-plumber'),      // Resolve and handle errors on pipe
@@ -12,7 +10,7 @@ const autoPrefixer = require('gulp-autoprefixer'), // CSS Auto-prefix
       concat       = require('gulp-concat'),       // Concat tasks
       uglify       = require('gulp-uglify'),       // Minify JS
       watch        = require('gulp-watch'),        // Watch files for changes
-      sass         = require('gulp-sass'),         // Use SASS 
+      sass         = require('gulp-sass'),         // Transpile SCSS to CSS
       gulp         = require('gulp');              // Gulp base
 
 // Sass Styles
@@ -69,7 +67,8 @@ gulp.task('styles', () => {
         }))
         .pipe(autoPrefixer({
             browsers: ['last 3 versions'],
-            cascade: false
+            cascade: false,
+            grid: true
         }))
         .pipe(sass(compressed))
         .pipe(rename('style-min.css'))
