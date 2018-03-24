@@ -1,1 +1,1 @@
-function test(){}
+'use strict';var test='test';var i=1;

@@ -1,3 +1,2 @@
-function test() {
-    
-}
+const test = 'test';
+const i = 1;

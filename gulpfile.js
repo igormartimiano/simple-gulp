@@ -1,25 +1,23 @@
+'use strict';
+
 // Dependecies
-// -------------------------
-// TO-DO Add Babel, eslint
+// --------------------------
 const autoPrefixer = require('gulp-autoprefixer'), // CSS Auto-prefix
       browserSync  = require('browser-sync'),      // Auto reload for debugging
-      sourceMap    = require('gulp-sourcemaps'),   // Sourcemaps for any extensions
       imageMin     = require('gulp-imagemin'),     // Compression for images (jpg, png, gif)
-      plumber      = require('gulp-plumber'),      // Resolve and handle errors on pipe
+      plumber      = require('gulp-plumber'),      // Handle errors without breaking the pipeline
       rename       = require('gulp-rename'),       // Rename files
-      concat       = require('gulp-concat'),       // Concat tasks
-      uglify       = require('gulp-uglify'),       // Minify JS
-      watch        = require('gulp-watch'),        // Watch files for changes
-      sass         = require('gulp-sass'),         // Transpile SCSS to CSS
+      babel        = require('gulp-babel'),        // Compile ES6, ES7 into ES5 and minify JS
+      sass         = require('gulp-sass'),         // Compile SCSS into CSS and minify CSS
       gulp         = require('gulp');              // Gulp base
 
 // Sass Styles
-// -------------------------
+// --------------------------
 const compressed = { outputStyle: 'compressed' },
       expanded   = { outputStyle: 'expanded'   };
 
-// Paths
-// -------------------------
+// App Paths
+// --------------------------
 const paths = {
     dev: {
         core: 'dev/**/*',
@@ -29,7 +27,7 @@ const paths = {
         views: 'dev/views/*.html'
     },
     dist: {
-        core: 'dist/**/*',
+        core: 'dist/',
         images: 'dist/images/',
         scripts: 'dist/js/',
         styles: 'dist/css/',
@@ -38,7 +36,7 @@ const paths = {
 }
 
 // Task - BrowserSync
-// -------------------------
+// --------------------------
 gulp.task('browserSync', () => {
     browserSync.init({ server: 'dist' })
     gulp.start(['images', 'scripts', 'styles', 'views']);
@@ -47,53 +45,47 @@ gulp.task('browserSync', () => {
     gulp.watch(paths.dev.views,   ['views']);
     gulp.watch(paths.dev.images,  ['images']);
     gulp.watch(paths.dist.core).on('change', () => {
-        browserSync.reload()
+      browserSync.reload()
     });
 });
 
 // Task - Styles
-// -------------------------
+// --------------------------
 gulp.task('styles', () => {
     gulp.src(paths.dev.styles)
-        .pipe(sourceMap.init())
-        .pipe(plumber({
-            errorHandler: function(err) {
-                notify.onError({
-                    title: 'SASS Error',
-                    message: 'Error: <%= error.message %>'
-                })(err);
-                this.emit('End')
-            }
-        }))
-        .pipe(autoPrefixer({
+        .pipe(plumber())
+        .pipe(autoPrefixer({    
             browsers: ['last 3 versions'],
             cascade: false,
             grid: true
         }))
         .pipe(sass(compressed))
         .pipe(rename('style-min.css'))
-        .pipe(sourceMap.write('.'))
         .pipe(gulp.dest(paths.dist.styles));
 })
 
 // Task - Views
-// -------------------------
+// --------------------------
 gulp.task('views', () => {
     gulp.src(paths.dev.views)
         .pipe(gulp.dest(paths.dist.core));
 });
 
 // Task - Scripts
-// -------------------------
+// --------------------------
 gulp.task('scripts', () => {
     gulp.src(paths.dev.scripts)
-        .pipe(uglify())
+        .pipe(plumber())
+        .pipe(babel({
+            'presets': ['env'],
+            'minified': true
+        }))
         .pipe(rename('app-min.js'))
         .pipe(gulp.dest(paths.dist.scripts));
 });
 
 // Task - Images
-// -------------------------
+// --------------------------
 gulp.task('images', () => {
     gulp.src(paths.dev.images)
         .pipe(imageMin())
@@ -101,5 +93,5 @@ gulp.task('images', () => {
 });
 
 // Task - Gulp
-// -------------------------
+// --------------------------
 gulp.task('default', ['browserSync'])

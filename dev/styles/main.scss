@@ -1,8 +1,5 @@
 @import '_core/_reset.scss';
-
-$black: #2c2c2c;
-$white: #ebebeb;
-$blue:  #417ef0;
+@import 'variables/variables.scss';
 
 body {
     background-color: $blue;
