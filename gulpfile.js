@@ -1,22 +1,30 @@
 'use strict';
 
+/*  
+    Autoprefix and Babel uses browserslist(https://github.com/browserslist/browserslist)
+    lib to define which browsers will receive retrocompatability.
+    Check key "browserslist" on package.json for the current values.
+*/
+
 // Dependecies
 // --------------------------
-const autoPrefixer = require('gulp-autoprefixer'), // CSS Auto-prefix
-      browserSync  = require('browser-sync'),      // Auto reload for debugging
-      imageMin     = require('gulp-imagemin'),     // Compression for images (jpg, png, gif)
-      plumber      = require('gulp-plumber'),      // Handle errors without breaking the pipeline
-      rename       = require('gulp-rename'),       // Rename files
-      babel        = require('gulp-babel'),        // Compile ES6, ES7 into ES5 and minify JS
-      sass         = require('gulp-sass'),         // Compile SCSS into CSS and minify CSS
-      gulp         = require('gulp');              // Gulp base
+const autoPrefixer = require('gulp-autoprefixer'),
+      browserSync  = require('browser-sync'),
+      imageMin     = require('gulp-imagemin'),
+      plumber      = require('gulp-plumber'),
+      htmlMin      = require('gulp-htmlmin'),
+      rename       = require('gulp-rename'),
+      babel        = require('gulp-babel'),
+      sass         = require('gulp-sass'),
+      gulp         = require('gulp');
 
-// Sass Styles
+// Params
 // --------------------------
-const compressed = { outputStyle: 'compressed' },
-      expanded   = { outputStyle: 'expanded'   };
+const compressed = { outputStyle: 'compressed' }, // Sass
+      expanded   = { outputStyle: 'expanded' },   // Sass
+      min        = { suffix: '-min' };            // Rename
 
-// App Paths
+// Paths
 // --------------------------
 const paths = {
     dev: {
@@ -38,12 +46,14 @@ const paths = {
 // Task - BrowserSync
 // --------------------------
 gulp.task('browserSync', () => {
-    browserSync.init({ server: 'dist' })
+    browserSync.init({
+        server: 'dist'
+    })
     gulp.start(['images', 'scripts', 'styles', 'views']);
     gulp.watch(paths.dev.scripts, ['scripts']);
-    gulp.watch(paths.dev.styles,  ['styles']);
-    gulp.watch(paths.dev.views,   ['views']);
-    gulp.watch(paths.dev.images,  ['images']);
+    gulp.watch(paths.dev.styles, ['styles']);
+    gulp.watch(paths.dev.views, ['views']);
+    gulp.watch(paths.dev.images, ['images']);
     gulp.watch(paths.dist.core).on('change', () => {
       browserSync.reload()
     });
@@ -54,13 +64,12 @@ gulp.task('browserSync', () => {
 gulp.task('styles', () => {
     gulp.src(paths.dev.styles)
         .pipe(plumber())
-        .pipe(autoPrefixer({    
-            browsers: ['last 3 versions'],
+        .pipe(autoPrefixer({
             cascade: false,
             grid: true
         }))
         .pipe(sass(compressed))
-        .pipe(rename('style-min.css'))
+        .pipe(rename(min))
         .pipe(gulp.dest(paths.dist.styles));
 })
 
@@ -68,6 +77,11 @@ gulp.task('styles', () => {
 // --------------------------
 gulp.task('views', () => {
     gulp.src(paths.dev.views)
+        .pipe(plumber())
+        .pipe(htmlMin({ 
+            collapseWhitespace: true
+        }))
+        .pipe(rename(min))
         .pipe(gulp.dest(paths.dist.core));
 });
 
@@ -80,7 +94,7 @@ gulp.task('scripts', () => {
             'presets': ['env'],
             'minified': true
         }))
-        .pipe(rename('app-min.js'))
+        .pipe(rename(min))
         .pipe(gulp.dest(paths.dist.scripts));
 });
 
@@ -88,6 +102,7 @@ gulp.task('scripts', () => {
 // --------------------------
 gulp.task('images', () => {
     gulp.src(paths.dev.images)
+        .pipe(plumber())
         .pipe(imageMin())
         .pipe(gulp.dest(paths.dist.images))
 });
