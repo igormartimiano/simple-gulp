@@ -1,6 +1,4 @@
 
-# Created by https://www.gitignore.io/api/node,linux,windows,visualstudiocode
-
 ### Linux ###
 *~
 
@@ -50,6 +48,9 @@ bower_components
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+
+# Dist folder
+dist/
 
 # Dependency directories
 node_modules/
@@ -105,6 +106,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-
-# End of https://www.gitignore.io/api/node,linux,windows,visualstudiocode

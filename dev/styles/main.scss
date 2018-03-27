@@ -1,14 +1,6 @@
-@import '_core/_reset.scss';
-@import 'variables/variables.scss';
+@import 'abstracts/_variables.scss';
 
-body {
-    background-color: $blue;
-}
+@import 'base/_normalize.scss';
+@import 'base/_base.scss';
 
-header {
-    background-color: $black;
-    width: 100%;
-    height: 100px;
-    box-shadow: 0 2px 2px $black;
-    margin: 0 auto;
-}
+@import 'layout/_header.scss';
