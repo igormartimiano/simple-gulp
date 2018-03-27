@@ -1,10 +1,11 @@
 'use strict';
 
-/*  
-    Autoprefix and Babel uses browserslist(https://github.com/browserslist/browserslist)
-    lib to define which browsers will receive retrocompatability.
-    Check key "browserslist" on package.json for the current values.
-*/
+/*
+ * Autoprefix and Babel uses browserslist lib to define which
+ * browsers will receive retrocompatability
+ * Check key "browserslist" on package.json for the current values
+ * See: https://github.com/browserslist/browserslist
+ */
 
 // Dependecies
 // --------------------------
@@ -78,10 +79,9 @@ gulp.task('styles', () => {
 gulp.task('views', () => {
     gulp.src(paths.dev.views)
         .pipe(plumber())
-        .pipe(htmlMin({ 
+        .pipe(htmlMin({
             collapseWhitespace: true
         }))
-        .pipe(rename(min))
         .pipe(gulp.dest(paths.dist.core));
 });
 
