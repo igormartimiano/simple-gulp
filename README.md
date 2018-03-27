@@ -1,16 +1,22 @@
-## Simple Gulp/Git/SASS/ES6 Playground
+# Simple Gulp/Git/SASS Playground
+
+Multi testing proposal repository.
+Testing some Gulp.js, ES6, SASS and Git with it.
 
 ---
 
-Multi testing proposal repository.
-Testing some gulp, ES6, SASS and git with it.
+## Instalation
 
-Build node_modules
-```
-npm install
-```
+You'll need to install [NodeJS](http://nodejs.org/).
 
-Build dist
-```
-gulp
+```sh
+# Clone the repository.
+$ git clone https://github.com/igormartimiano/simple-gulp simple-gulp
+$ cd simple-gulp
+
+# Installs dependencies.
+$ npm install
+
+# Builds dist and starts server at port:3000.
+$ gulp
 ```
