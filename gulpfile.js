@@ -7,7 +7,7 @@
  * See: https://github.com/browserslist/browserslist
  */
 
-// Dependecies
+// Dependecies and Testing
 // --------------------------
 const autoPrefixer = require('gulp-autoprefixer'),
       browserSync  = require('browser-sync'),
@@ -19,14 +19,10 @@ const autoPrefixer = require('gulp-autoprefixer'),
       sass         = require('gulp-sass'),
       gulp         = require('gulp');
 
-// Params
-// --------------------------
 const compressed = { outputStyle: 'compressed' }, // Sass
       expanded   = { outputStyle: 'expanded' },   // Sass
       min        = { suffix: '-min' };            // Rename
 
-// Paths
-// --------------------------
 const paths = {
     dev: {
         core: 'dev/**/*',
@@ -44,7 +40,7 @@ const paths = {
     }
 }
 
-// Task - BrowserSync
+// Tasks Gulp (testing)
 // --------------------------
 gulp.task('browserSync', () => {
     browserSync.init({
@@ -60,8 +56,6 @@ gulp.task('browserSync', () => {
     });
 });
 
-// Task - Styles
-// --------------------------
 gulp.task('styles', () => {
     gulp.src(paths.dev.styles)
         .pipe(plumber())
