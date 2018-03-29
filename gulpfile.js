@@ -7,7 +7,7 @@
  * See: https://github.com/browserslist/browserslist
  */
 
-// Dependecies and Testing
+// Dependencies and Objects
 // --------------------------
 const autoPrefixer = require('gulp-autoprefixer'),
       browserSync  = require('browser-sync'),
@@ -40,7 +40,7 @@ const paths = {
     }
 }
 
-// Tasks Gulp (testing)
+// Tasks
 // --------------------------
 gulp.task('browserSync', () => {
     browserSync.init({
@@ -68,8 +68,6 @@ gulp.task('styles', () => {
         .pipe(gulp.dest(paths.dist.styles));
 })
 
-// Task - Views
-// --------------------------
 gulp.task('views', () => {
     gulp.src(paths.dev.views)
         .pipe(plumber())
@@ -79,8 +77,6 @@ gulp.task('views', () => {
         .pipe(gulp.dest(paths.dist.core));
 });
 
-// Task - Scripts
-// --------------------------
 gulp.task('scripts', () => {
     gulp.src(paths.dev.scripts)
         .pipe(plumber())
@@ -92,8 +88,6 @@ gulp.task('scripts', () => {
         .pipe(gulp.dest(paths.dist.scripts));
 });
 
-// Task - Images
-// --------------------------
 gulp.task('images', () => {
     gulp.src(paths.dev.images)
         .pipe(plumber())
@@ -101,6 +95,4 @@ gulp.task('images', () => {
         .pipe(gulp.dest(paths.dist.images))
 });
 
-// Task - Gulp
-// --------------------------
 gulp.task('default', ['browserSync'])
