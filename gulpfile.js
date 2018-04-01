@@ -20,7 +20,6 @@ const autoPrefixer = require('gulp-autoprefixer'),
       gulp         = require('gulp');
 
 const compressed = { outputStyle: 'compressed' }, // Sass
-      expanded   = { outputStyle: 'expanded' },   // Sass
       min        = { suffix: '-min' };            // Rename
 
 const paths = {
@@ -38,21 +37,21 @@ const paths = {
         styles: 'dist/css/',
         views: 'dist/html/'
     }
-}
+};
 
 // Tasks
 // --------------------------
 gulp.task('browserSync', () => {
     browserSync.init({
         server: 'dist'
-    })
+    });
     gulp.start(['images', 'scripts', 'styles', 'views']);
     gulp.watch(paths.dev.scripts, ['scripts']);
     gulp.watch(paths.dev.styles, ['styles']);
     gulp.watch(paths.dev.views, ['views']);
     gulp.watch(paths.dev.images, ['images']);
     gulp.watch(paths.dist.core).on('change', () => {
-      browserSync.reload()
+      browserSync.reload();
     });
 });
 
@@ -66,7 +65,7 @@ gulp.task('styles', () => {
         .pipe(sass(compressed))
         .pipe(rename(min))
         .pipe(gulp.dest(paths.dist.styles));
-})
+});
 
 gulp.task('views', () => {
     gulp.src(paths.dev.views)
@@ -92,7 +91,7 @@ gulp.task('images', () => {
     gulp.src(paths.dev.images)
         .pipe(plumber())
         .pipe(imageMin())
-        .pipe(gulp.dest(paths.dist.images))
+        .pipe(gulp.dest(paths.dist.images));
 });
 
-gulp.task('default', ['browserSync'])
+gulp.task('default', ['browserSync']);
